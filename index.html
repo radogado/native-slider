@@ -12,7 +12,7 @@
 			width: 500px;
 			overflow-x: scroll;
 			white-space: nowrap;
-			-webkit-overflow-scrolling: touch;
+/* 			-webkit-overflow-scrolling: touch; */
 			background: #eee;
 			margin: 0 auto;
 		}
@@ -32,12 +32,12 @@
 	        if (scrollTimer != -1)
 	            clearTimeout(scrollTimer);
 	
-	        scrollTimer = window.setTimeout("scrollFinished()", 500);
+	        scrollTimer = window.setTimeout("scrollFinished()", 100);
 	    }
 	
 	    function scrollFinished() { // center the nearest scrolling item
 			
-			$('#slider').animate ( { 'scrollLeft': Math.round ( document.getElementById('slider').scrollLeft / document.getElementById('slider').offsetWidth ) * document.getElementById('slider').offsetWidth }, 200);
+			$('#slider').animate ( { 'scrollLeft': Math.round ( document.getElementById('slider').scrollLeft / document.getElementById('slider').offsetWidth ) * document.getElementById('slider').offsetWidth }, 100);
 
 	    }
 	</script>	
