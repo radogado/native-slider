@@ -21,14 +21,15 @@
 			width: 100%;
 			display: inline-block;
 			white-space: normal;
+			margin-right: -4px;
 		}
-	
+		
 	</style>
 
 	<script type="text/javascript">
 	    var scrollTimer = -1;
 	
-	    function bodyScroll() {
+	    function scrollslider() {
 	        if (scrollTimer != -1)
 	            clearTimeout(scrollTimer);
 	
@@ -40,13 +41,14 @@
 			$('#slider').animate ( { 'scrollLeft': Math.round ( document.getElementById('slider').scrollLeft / document.getElementById('slider').offsetWidth ) * document.getElementById('slider').offsetWidth }, 100);
 
 	    }
+
 	</script>	
 
 </head>
 
 <body>
 
-	<div class="slider" id="slider" onscroll="bodyScroll();">
+	<div class="slider" id="slider" onscroll="scrollslider();">
 	
 			<p> Slide 1 </p>
 			
