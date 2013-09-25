@@ -21,7 +21,7 @@
 			width: 100%;
 			display: inline-block;
 			white-space: normal;
-			margin-right: -4px;
+			margin: 0 -4px 0 0;
 		}
 		
 	</style>
@@ -41,14 +41,29 @@
 			$('#slider').animate ( { 'scrollLeft': Math.round ( document.getElementById('slider').scrollLeft / document.getElementById('slider').offsetWidth ) * document.getElementById('slider').offsetWidth }, 100);
 
 	    }
+	    
+	    $('#slider').scroll ( function (e) {
+		    scrollslider();
+	    });
 
+		$(document).keydown(function(e){
+		    if (e.keyCode == 37) { 
+		       $('#slider').animate ( { 'scrollLeft': $(this).width()}, 100);
+		       return false;
+		    }
+		    if (e.keyCode == 39) { 
+		       $('#slider').animate ( { 'scrollLeft': $(this).offset().left + $(this).width() }, 100);
+		       return false;
+		    }
+		});
+		
 	</script>	
 
 </head>
 
 <body>
 
-	<div class="slider" id="slider" onscroll="scrollslider();">
+	<div class="slider" id="slider">
 	
 			<p> Slide 1 </p>
 			
