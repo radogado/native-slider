@@ -35,7 +35,7 @@
 	
 			<p> Slide 1 </p>
 			
-			<a><img src="img.png" alt="0"></a>
+			<a> <img src="img.png" alt="0"> </a>
 			
 			<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
 
@@ -45,13 +45,20 @@
 
 	<script type="text/javascript">
 
-		document.getElementById("slider").onscroll = 	    function scrollslider() {
+/* 		document.getElementById("slider").onscroll = scrollslider; */
+		
+		function scrollslider() {
 	        if (scrollTimer != -1)
 	            clearTimeout(scrollTimer);
 	
-	        scrollTimer = window.setTimeout("scrollFinished()", 50);
-	    }
-;
+	        scrollTimer = window.setTimeout("scrollFinished()", 100);
+	    };
+
+		function blank () {
+			return false;
+		}
+
+		$('#slider').on('scroll', scrollslider );
 
 	    var scrollTimer = -1;
 	
@@ -61,13 +68,17 @@
 
 	    }
 
-		$(document).keydown(function(e){
-		    if (e.keyCode == 37) { 
-		       $('#slider').animate ( { 'scrollLeft': $(this).width()}, 100);
+		$(document).keyup(function(e){
+		    if (e.keyCode == 37) { // left
+				$('#slider').off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() - $('#slider').width()}, 100, function () { 
+					window.setTimeout("$('#slider').on('scroll', scrollslider )", 100); // fix it
+				});
 		       return false;
 		    }
-		    if (e.keyCode == 39) { 
-		       $('#slider').animate ( { 'scrollLeft': $(this).offset().left + $(this).width() }, 100);
+		    if (e.keyCode == 39) { // right
+				$('#slider').off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() + $('#slider').width()}, 100, function () { 
+					window.setTimeout("$('#slider').on('scroll', scrollslider )", 100); // fix it
+				});
 		       return false;
 		    }
 		});
