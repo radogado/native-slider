@@ -39,24 +39,18 @@
 			
 			<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
 
-			<p> Slide 3 </p>
+			<p> Slide 4 </p>
 		
 	</div>
 
 	<script type="text/javascript">
 
-/* 		document.getElementById("slider").onscroll = scrollslider; */
-		
 		function scrollslider() {
 	        if (scrollTimer != -1)
 	            clearTimeout(scrollTimer);
 	
 	        scrollTimer = window.setTimeout("scrollFinished()", 100);
 	    };
-
-		function blank () {
-			return false;
-		}
 
 		$('#slider').on('scroll', scrollslider );
 
