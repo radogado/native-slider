@@ -63,15 +63,19 @@
 	    }
 
 		$(document).keyup(function(e){
+			e.stopPropagation();
+
 		    if (e.keyCode == 37) { // left
-				$('#slider').off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() - $('#slider').width()}, 100, function () { 
-					window.setTimeout("$('#slider').on('scroll', scrollslider )", 100); // fix it
+		    	
+				$('#slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() - $('#slider').width()}, 150, function () { 
+					$('#slider').on('scroll', scrollslider ); 
 				});
 		       return false;
 		    }
 		    if (e.keyCode == 39) { // right
-				$('#slider').off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() + $('#slider').width()}, 100, function () { 
-					window.setTimeout("$('#slider').on('scroll', scrollslider )", 100); // fix it
+
+				$('#slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() + $('#slider').width()}, 150, function () { 
+					$('#slider').on('scroll', scrollslider ); 
 				});
 		       return false;
 		    }
