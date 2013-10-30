@@ -52,7 +52,9 @@
 	        scrollTimer = window.setTimeout("scrollFinished()", 100);
 	    };
 
-		$('#slider').on('scroll', scrollslider );
+/* 		To do: Fix clicking the built-in scrollbar arrow in IE  */
+
+		if ( !navigator.userAgent.match(/msie/i) ) { $('#slider').on('scroll', scrollslider ); }
 
 	    var scrollTimer = -1;
 	
