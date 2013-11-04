@@ -11,6 +11,8 @@
 		.slider {
 			max-width: 500px;
 			overflow-x: scroll;
+			-ms-scroll-translation: vertical-to-horizontal;
+			overflow-y: hidden;
 			white-space: nowrap;
 /* 			-webkit-overflow-scrolling: touch; */
 			background: #eee;
@@ -53,12 +55,12 @@
 	        if (scrollTimer != -1)
 	            clearTimeout(scrollTimer);
 	
-	        scrollTimer = window.setTimeout("scrollFinished()", 100);
+	        scrollTimer = window.setTimeout("scrollFinished()", 50);
 	    };
 
 /* 		To do: Fix clicking the built-in scrollbar arrow in IE  */
 
-		if ( !navigator.userAgent.match(/rident/i) ) { $('#slider').on('scroll', scrollslider ); }
+		{ $('#slider').on('scroll', scrollslider ); }
 
 	    var scrollTimer = -1;
 	
@@ -73,14 +75,14 @@
 
 		    if (e.keyCode == 37) { // left
 		    	
-				$('#slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() - $('#slider').width()}, 150, function () { 
+				$('#slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() - $('#slider').width()}, 100, function () { 
 					$('#slider').on('scroll', scrollslider ); 
 				});
 		       return false;
 		    }
 		    if (e.keyCode == 39) { // right
 
-				$('#slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() + $('#slider').width()}, 150, function () { 
+				$('#slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() + $('#slider').width()}, 100, function () { 
 					$('#slider').on('scroll', scrollslider ); 
 				});
 		       return false;
