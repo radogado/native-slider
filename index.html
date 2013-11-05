@@ -8,49 +8,61 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 
 	<style type="text/css">
-	
-		.slider {
-			max-width: 500px;
-			overflow-x: scroll;
-			-ms-scroll-translation: vertical-to-horizontal;
-/* 			overflow-y: hidden; */
-			float: left;		
-			white-space: nowrap;
-/* 			-webkit-overflow-scrolling: touch; */
-			position: relative;
-			background: #eee;
-			margin: 0 2em;
+		
+		.slider-container {
+			
 			-webkit-touch-callout: none;
 			-webkit-user-select: none;
 			-khtml-user-select: none;
 			-moz-user-select: none;
 			-ms-user-select: none;
 			user-select: none;
+			float: left;
+			position: relative;
+		}
+			
+		.slider {
+			max-width: 500px;
+			overflow-x: scroll;
+			-ms-scroll-translation: vertical-to-horizontal;
+			white-space: nowrap;
+			background: #eee;
+			display: inline-block;
 			
 		}
-		
-		.slider:before, .slider:after {
-			content: "⬅︎";
-			z-index: 9999;
-			position: fixed;
-			margin-left: -2em;
-			width: 1em;
-			overflow: hidden;
-			vertical-align: middle;
-			height: 100%;
+	
+		.slider-left, .slider-right, .slider-nav a {
+			
 			cursor: pointer;
-		}
+			
+		}		
 		
-		.slider:after {
-			content: "➡︎";
-			margin-right: 2em;
+		.slider-nav a {
+			
+			padding: 1em;
+			display: inline-block;
+			
 		}
-		
+
+		.slider-nav a:hover {
+
+			text-decoration: underline;
+
+		}
+				
+		.slider-nav {
+			
+			display: block;
+			clear: both;
+			text-align: center;
+			
+		}
+				
 		.slider > * {
 			width: 100%;
 			display: inline-block;
 			white-space: normal;
-			margin: 0 -4px 0 0;
+			margin: 0 -4px 0 0; /* Fix inline-block right padding */
 			vertical-align: top;
 		}
 		
@@ -68,15 +80,25 @@
 
 	</div>
 
-	<div class="slider" id="slider">
+	<div class="slider-container">
 	
-			<p> Slide 1 </p>
+		<div class="slider" id="slider">
+		
+				<div>
 			
-			<a> <img src="img.png" alt="0"> </a>
+					<p> Slide 1 </p>
+					
+					<form action="#"> <input type="submit"> </form>
+					
+				</div>
+				
+				<a> <img src="img.png" alt="0"> </a>
+				
+				<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
+	
+				<p> Slide 4 </p>
 			
-			<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. </p>
-
-			<p> Slide 4 </p>
+		</div>
 		
 	</div>
 
@@ -95,13 +117,13 @@
 
 /* 		To do: Fix clicking the built-in scrollbar arrow in IE  */
 
-		{ $('#slider').on('scroll', scrollslider ); }
+		{ $('.slider').on('scroll', scrollslider ); }
 
 	    var scrollTimer = -1;
 	
 	    function scrollFinished() { // center the nearest scrolling item
 			
-			$('#slider').animate ( { 'scrollLeft': Math.round ( document.getElementById('slider').scrollLeft / document.getElementById('slider').offsetWidth ) * document.getElementById('slider').offsetWidth }, 100);
+			$('.slider').animate ( { 'scrollLeft': Math.round ( document.getElementById('slider').scrollLeft / document.getElementById('slider').offsetWidth ) * document.getElementById('slider').offsetWidth }, 100);
 
 	    }
 
@@ -110,20 +132,56 @@
 
 		    if (e.keyCode == 37) { // left
 		    	
-				$('#slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() - $('#slider').width()}, 100, function () { 
-					$('#slider').on('scroll', scrollslider ); 
+				$('.slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('.slider').scrollLeft() - $('.slider').width()}, 100, function () { 
+					$('.slider').on('scroll', scrollslider ); 
 				});
 		       return false;
 		    }
 		    if (e.keyCode == 39) { // right
 
-				$('#slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('#slider').scrollLeft() + $('#slider').width()}, 100, function () { 
-					$('#slider').on('scroll', scrollslider ); 
+				$('.slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('.slider').scrollLeft() + $('.slider').width()}, 100, function () { 
+					$('.slider').on('scroll', scrollslider ); 
 				});
 		       return false;
 		    }
 		});
+
+		/* Initialise slider JS extras */
 		
+		$('.slider-container').prepend('<a class="slider-left">⬅︎</a>').append('<a class="slider-right">➡︎</a>').append('<span class="slider-nav"></span>');
+		
+		$('.slider > *').each ( function (n) {
+
+			$('.slider-nav').append('<a>' + (n + 1) + '</a>');
+			
+		});
+
+		$('.slider-left').click ( function (e) {  
+
+			$('.slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('.slider').scrollLeft() - $('.slider').width()}, 100, function () { 
+				$('.slider').on('scroll', scrollslider ); 
+
+			});
+		
+		});
+
+		$('.slider-right').click ( function (e) {  
+
+			$('.slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $('.slider').scrollLeft() + $('.slider').width()}, 100, function () { 
+				$('.slider').on('scroll', scrollslider ); 
+			});
+		
+		});
+
+		$('.slider-nav a').click ( function (e) {  
+			var n = $(this).index();
+			
+			$('.slider').stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': n * $('.slider').width() }, 100, function () { 
+				$('.slider').on('scroll', scrollslider ); 
+			});
+		
+		});
+				
 	</script>	
 
 </body>
