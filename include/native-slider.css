@@ -1,0 +1,89 @@
+.slider-container {
+	
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	display: table;
+	table-layout: fixed;
+	float: left;
+	position: relative;
+	width: 100%;
+
+}
+	
+.slider {
+	overflow-x: scroll;
+	-ms-scroll-translation: vertical-to-horizontal;
+	white-space: nowrap;
+	background: #eee;
+	display: inline-block;
+	width: 100%;
+}
+
+.slider-arrow {
+	
+	display: table-cell;
+	vertical-align: middle;
+	position: absolute;
+	top: 40%;
+	left: 1em;
+	
+}
+.slider-arrow.right {
+	left: auto;
+	right: 1em;
+}
+
+.slider-arrow, .slider-nav a {
+	
+	cursor: pointer;
+	padding: .8em;
+	width: 1em;
+	height: 1em;
+	border-radius: 50%;
+	border: 1px solid #666;
+	background: #999;
+	color: #fff;
+	text-shadow: 0 -1px 1px #000;
+	
+}		
+
+.slider-nav a {
+	
+	display: inline-block;
+	margin: .5em;
+	
+}
+
+.slider-nav a:hover, .slider-left:hover, .slider-right:hover {
+
+	text-decoration: underline;
+
+}
+		
+.slider-nav {
+	
+	display: block;
+	clear: both;
+	text-align: center;
+	position: absolute;
+	bottom: 1em;
+	width: 100%;
+	
+}
+		
+.slider > * {
+	width: 100%;
+	display: inline-block;
+	white-space: normal;
+	margin: 0 -4px 0 0; /* Fix inline-block right padding */
+	vertical-align: top;
+	overflow: hidden;
+}
+
+.slider img {
+	display: block; /* Fix image bottom padding */
+}
