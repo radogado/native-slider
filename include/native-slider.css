@@ -14,7 +14,7 @@
 .slider {
 
 	overflow-x: scroll;
-	-ms-scroll-translation: vertical-to-horizontal;
+	overflow-y: hidden;
 	white-space: nowrap;
 	background: #eee;
 
