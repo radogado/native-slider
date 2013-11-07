@@ -6,30 +6,24 @@
 	-moz-user-select: none;
 	-ms-user-select: none;
 	user-select: none;
-	display: table;
-	table-layout: fixed;
-	float: left;
 	position: relative;
-	width: 100%;
 	font-family: 'Helvetica Neue', sans-serif;
 
 }
 	
 .slider {
+
 	overflow-x: scroll;
 	-ms-scroll-translation: vertical-to-horizontal;
 	white-space: nowrap;
 	background: #eee;
-	display: inline-block;
-	width: 100%;
+
 }
 
 .slider-arrow {
 	
-	display: table-cell;
-	vertical-align: middle;
 	position: absolute;
-	top: 40%;
+	top: 45%;
 	left: 1em;
 	
 }
@@ -52,23 +46,8 @@
 	
 }		
 
-.slider-nav a {
-	
-	display: inline-block;
-	margin: .5em;
-	
-}
-
-.slider-nav a:hover, .slider-left:hover, .slider-right:hover {
-
-	text-decoration: underline;
-
-}
-		
 .slider-nav {
 	
-	display: block;
-	clear: both;
 	text-align: center;
 	position: absolute;
 	bottom: 1em;
@@ -76,6 +55,13 @@
 	
 }
 		
+.slider-nav a {
+	
+	display: inline-block;
+	margin: .5em;
+	
+}
+
 .slider > * {
 	width: 100%;
 	display: inline-block;
