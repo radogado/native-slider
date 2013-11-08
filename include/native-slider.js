@@ -50,11 +50,13 @@ $(document).ready(function() {
 
 	$('.slider').each ( function (n) {
 		
-		$(this).before('<div class="slider-container"></div>').detach().appendTo('.slider-container').before('<a class="slider-arrow left">←</a>').after('<div class="slider-nav"></div>').after('<a class="slider-arrow right">→</a>');
+		$(this).before('<div class="slider-container"></div>').appendTo( $(this).prev() );
+		
+		$(this).parent().prepend('<a class="slider-arrow left">←</a>').append('<a class="slider-arrow right">→</a>').append('<div class="slider-nav"></div>');
 		
 		$(this).children().each ( function (n) {
 		
-			$('.slider-nav').append('<a>' + (n + 1) + '</a>');
+			$(this).parent().parent().find('.slider-nav').append('<a>' + (n + 1) + '</a>');
 			
 		});
 		
