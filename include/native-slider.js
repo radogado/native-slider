@@ -1,7 +1,8 @@
 var scrollTimer = -1;
 var slider;
 	
-function scrollslider() {
+function scrollslider( current_slider ) {
+	slider = current_slider;
     if (scrollTimer != -1)
         clearTimeout(scrollTimer);
 
@@ -37,11 +38,11 @@ $(document).ready(function() {
 		/* To do: detect nearest/focused slider and control that one */
 	    if (e.keyCode == 37) { // left
 	    	
-			slide(e, $('.slider'), -1);
+			slide(e, $('.slider-container:first-of-type .slider'), -1);
 	    }
 	    if (e.keyCode == 39) { // right
 	
-			slide(e, $('.slider'), 1);
+			slide(e, $('.slider-container:first-of-type .slider'), 1);
 			
 	    }
 	});
@@ -60,18 +61,20 @@ $(document).ready(function() {
 			
 		});
 		
-		$('.slider-arrow.left').click ( function (e) {  
+		$(this).siblings('.slider-arrow.left').click ( function (e) {  
 			
 			slide(e, $(this).siblings('.slider'), -1);
 				
 		});
 		
-		$('.slider-arrow.right').click ( function (e) {
+		$(this).siblings('.slider-arrow.right').click ( function (e) {
 			
 			slide(e, $(this).siblings('.slider'), 1);	
 		});
 		
-		$('.slider-nav a').click ( function (e) {  
+		$(this).siblings('.slider-nav').children('a').click ( function (e) {  
+
+			e.stopPropagation();
 			var n = $(this).index();
 			var this_slider = $(this).parent().siblings('.slider');
 			
