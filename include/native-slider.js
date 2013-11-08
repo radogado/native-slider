@@ -1,8 +1,8 @@
 var scrollTimer = -1;
 var slider;
 	
-function scrollslider( current_slider ) {
-	slider = current_slider;
+function scrollslider() {
+
     if (scrollTimer != -1)
         clearTimeout(scrollTimer);
 
