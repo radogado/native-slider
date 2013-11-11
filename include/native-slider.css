@@ -17,6 +17,7 @@
 	overflow-y: hidden;
 	white-space: nowrap;
 	background: #eee;
+	-webkit-overflow-scrolling: touch;
 
 }
 

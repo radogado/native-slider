@@ -29,11 +29,9 @@ function slide(e, current_slider, direction ) {
 
 $(document).ready(function() {
 	
-	slider = $('.slider');
-
 	/*	To do: Fix clicking the built-in scrollbar arrow in IE  */
 	
-	$(slider).on('scroll', scrollslider );
+	$('.slider').on('scroll', function () { slider = $(this); scrollslider(); } );
 	
 	$(document).keyup(function(e){
 		/* To do: detect nearest/focused slider and control that one */
