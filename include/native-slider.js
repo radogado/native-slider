@@ -16,7 +16,8 @@ function scrollFinished() { // center the nearest scrolling item
 }
 
 function slide(e, current_slider, direction ) {
-
+	slider = current_slider;
+	
 	e.stopPropagation();
     clearTimeout(scrollTimer);
 
@@ -77,7 +78,8 @@ $(document).ready(function() {
 			e.stopPropagation();
 			var n = $(this).index();
 			var this_slider = $(this).parent().siblings('.slider');
-			
+			slider = this_slider;
+						
 			$(this_slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': n * $(this_slider).width() }, 100, function () { 
 				$(this_slider).on('scroll', scrollslider );
 			});
