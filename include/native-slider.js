@@ -21,7 +21,7 @@ function slide(e, current_slider, direction ) {
 	e.stopPropagation();
     clearTimeout(scrollTimer);
 
-	$(current_slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $(current_slider).scrollLeft() + direction * $(current_slider).width() }, 100, function () { 
+	$(current_slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $(current_slider).scrollLeft() + direction * $(current_slider).width() }, 200, function () { 
 		$(current_slider).on('scroll', scrollslider ); 
 	});
 	
@@ -75,11 +75,10 @@ $(document).ready(function() {
 
 			e.stopPropagation();
 			var n = $(this).index();
-			var this_slider = $(this).parent().siblings('.slider');
-			slider = this_slider;
+			slider = $(this).parent().siblings('.slider');
 						
-			$(this_slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': n * $(this_slider).width() }, 100, function () { 
-				$(this_slider).on('scroll', scrollslider );
+			$(slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': n * $(slider).width() }, 100, function () { 
+				$(slider).on('scroll', scrollslider );
 			});
 		
 		});
