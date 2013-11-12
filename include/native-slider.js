@@ -1,4 +1,4 @@
-var scrollTimer = -1;
+var scrollTimer;
 var slider;
 	
 function scrollslider() {
@@ -7,6 +7,7 @@ function scrollslider() {
         clearTimeout(scrollTimer);
 
     scrollTimer = window.setTimeout("scrollFinished()", 50);
+
 };
 
 function scrollFinished() { // center the nearest scrolling item
@@ -21,7 +22,7 @@ function slide(e, current_slider, direction ) {
 	e.stopPropagation();
     clearTimeout(scrollTimer);
 
-	$(current_slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $(current_slider).scrollLeft() + direction * $(current_slider).width() }, 200, function () { 
+	$(current_slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $(current_slider).scrollLeft() + direction * $(current_slider).width() }, 'fast', function () { 
 		$(current_slider).on('scroll', scrollslider ); 
 	});
 	
@@ -46,7 +47,7 @@ $(document).ready(function() {
 	    }
 	});
 	
-	/* Initialise slider JS extras: arrow and numbers nav */
+	/* Initialise JS extras: arrows/numbers navigation */
 
 	$('.slider').each ( function (n) {
 		
@@ -77,7 +78,7 @@ $(document).ready(function() {
 			var n = $(this).index();
 			slider = $(this).parent().siblings('.slider');
 						
-			$(slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': n * $(slider).width() }, 100, function () { 
+			$(slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': n * $(slider).width() }, 'fast', function () { 
 				$(slider).on('scroll', scrollslider );
 			});
 		
