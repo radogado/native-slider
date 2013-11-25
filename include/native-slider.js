@@ -85,5 +85,23 @@ $(document).ready(function() {
 		});
 		
 	});
+	
+});
+
+$(window).load(function() {
+	
+	// Get scrollbar width and hide it by reducing the .slider-container height by its value
+
+	$('.slider').css('overflow-x', 'hidden');
+	var height_scroll = $('.slider').height();
+	$('.slider').css('overflow-x', 'scroll');
+	height_scroll = $('.slider').height() - height_scroll;
+	
+	$('.slider-container').each ( function () { 
+
+		$(this).height( $(this).height() - height_scroll );
+		
+	});
 
 });
+
