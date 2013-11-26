@@ -10,9 +10,20 @@ function scrollslider() {
 
 };
 
+function move_index() {
+
+	$(slider).parent().find('.slider-nav a.active').removeClass();
+	var index = $(slider).scrollLeft() / $(slider).width() + 1;
+	if ( index > $(slider).parent().find('.slider-nav a').length ) { index = $(slider).parent().find('.slider-nav a').length; }
+	$(slider).parent().find('.slider-nav a:nth-child(' + index + ')').addClass('active');
+	
+}
+
 function scrollFinished() { // center the nearest scrolling item
 
-	$(slider).animate ( { 'scrollLeft': Math.round ( $(slider).scrollLeft() / $(slider).width() ) * $(slider).width() }, 100);
+	$(slider).animate ( { 'scrollLeft': Math.round ( $(slider).scrollLeft() / $(slider).width() ) * $(slider).width() }, 100, function () {
+		move_index();
+	});
 
 }
 
@@ -21,11 +32,13 @@ function slide(e, current_slider, direction ) {
 	
 	e.stopPropagation();
     clearTimeout(scrollTimer);
-
-	$(current_slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $(current_slider).scrollLeft() + direction * $(current_slider).width() }, 'fast', function () { 
-		$(current_slider).on('scroll', scrollslider ); 
+	
+	$(slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': $(slider).scrollLeft() + direction * $(slider).width() }, 'fast', function () { 
+		$(slider).on('scroll', scrollslider ); 
+		move_index();
 	});
 	
+	// Set active index button
 }
 
 $(document).ready(function() {
@@ -61,6 +74,8 @@ $(document).ready(function() {
 			
 		});
 		
+		$(this).parent().find('.slider-nav a:first-child').addClass('active');
+
 		$(this).siblings('.slider-arrow.left').click ( function (e) {  
 			
 			slide(e, $(this).siblings('.slider'), -1);
@@ -76,6 +91,8 @@ $(document).ready(function() {
 
 			e.stopPropagation();
 			var n = $(this).index();
+			$(this).siblings('a.active').removeClass();
+			$(this).addClass('active');
 			slider = $(this).parent().siblings('.slider');
 						
 			$(slider).stop( true, true ).off('scroll', scrollslider ).animate ( { 'scrollLeft': n * $(slider).width() }, 'fast', function () { 
@@ -90,7 +107,7 @@ $(document).ready(function() {
 
 $(window).load(function() {
 	
-	// Get scrollbar width and hide it by reducing the .slider-container height by its value
+	// Get scrollbar width and hide it by reducing the .slider-container height proportiobally
 
 	$('.slider').css('overflow-x', 'hidden');
 	var height_scroll = $('.slider').height();

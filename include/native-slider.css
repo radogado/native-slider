@@ -57,8 +57,15 @@
 	color: #fff;
 	text-shadow: 0 -1px 1px #333;
 	box-shadow: 0 1px 1px #666;
-	
-}		
+	transition: background-color .2s linear;
+
+}
+
+.slider-nav a.active {
+
+	background: #666;
+
+}
 
 .slider-nav {
 	
