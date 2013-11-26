@@ -14,7 +14,11 @@ function move_index() {
 
 	$(slider).parent().find('.slider-nav a.active').removeClass();
 	var index = $(slider).scrollLeft() / $(slider).width() + 1;
-	if ( index > $(slider).parent().find('.slider-nav a').length ) { index = $(slider).parent().find('.slider-nav a').length; }
+
+	if ( index > $(slider).parent().find('.slider-nav a').length ) { 
+		index = $(slider).parent().find('.slider-nav a').length; 
+	}
+
 	$(slider).parent().find('.slider-nav a:nth-child(' + index + ')').addClass('active');
 	
 }
@@ -45,17 +49,37 @@ $(document).ready(function() {
 	
 	/*	To do: Fix clicking the built-in scrollbar arrow in IE  */
 	
-	$('.slider').on('scroll', function () { slider = $(this); scrollslider(); } );
+	$('.slider').on('scroll', function () { 
+		slider = $(this); 
+		scrollslider(); 
+	});
 	
 	$(document).keyup(function(e){
-		/* To do: detect nearest/focused slider and control that one */
+
+		/* Detect a slider into view and control it */
+
+	    var docViewTop = $(window).scrollTop();
+	    var docViewBottom = docViewTop + $(window).height();
+
+		$('.slider').each( function (n) {
+
+		    var elemTop = $(this).offset().top;
+		    var elemBottom = elemTop + $(this).height();
+
+			if ((elemBottom <= docViewBottom) && (elemTop >= docViewTop)) {
+				slider = this; 
+				return;
+			}			
+
+		});
+		
 	    if (e.keyCode == 37) { // left
 	    	
-			slide(e, $('.slider-container:first-of-type .slider'), -1);
+			slide(e, slider, -1);
 	    }
 	    if (e.keyCode == 39) { // right
 	
-			slide(e, $('.slider-container:first-of-type .slider'), 1);
+			slide(e, slider, 1);
 			
 	    }
 	});
@@ -121,4 +145,3 @@ $(window).load(function() {
 	});
 
 });
-
