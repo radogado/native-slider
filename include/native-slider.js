@@ -10,6 +10,14 @@ function scrollslider() {
 
 };
 
+function scrollFinished() { // center the nearest scrolling item
+
+	$(slider).animate ( { 'scrollLeft': Math.round ( $(slider).scrollLeft() / $(slider).width() ) * $(slider).width() }, 100, function () {
+		move_index();
+	});
+
+}
+
 function move_index() {
 
 	$(slider).parent().find('.slider-nav a.active').removeClass();
@@ -23,16 +31,7 @@ function move_index() {
 	
 }
 
-function scrollFinished() { // center the nearest scrolling item
-
-	$(slider).animate ( { 'scrollLeft': Math.round ( $(slider).scrollLeft() / $(slider).width() ) * $(slider).width() }, 100, function () {
-		move_index();
-	});
-
-}
-
-function slide(e, current_slider, direction ) {
-	slider = current_slider;
+function slide(e, direction ) {
 	
 	e.stopPropagation();
     clearTimeout(scrollTimer);
@@ -75,11 +74,11 @@ $(document).ready(function() {
 		
 	    if (e.keyCode == 37) { // left
 	    	
-			slide(e, slider, -1);
+			slide(e, -1);
 	    }
 	    if (e.keyCode == 39) { // right
 	
-			slide(e, slider, 1);
+			slide(e, 1);
 			
 	    }
 	});
@@ -102,13 +101,16 @@ $(document).ready(function() {
 
 		$(this).siblings('.slider-arrow.left').click ( function (e) {  
 			
-			slide(e, $(this).siblings('.slider'), -1);
+			slider = $(this).siblings('.slider');
+			slide(e, -1);
 				
 		});
 		
 		$(this).siblings('.slider-arrow.right').click ( function (e) {
 			
-			slide(e, $(this).siblings('.slider'), 1);	
+			slider = $(this).siblings('.slider');
+			slide(e, 1);	
+
 		});
 		
 		$(this).siblings('.slider-nav').children('a').click ( function (e) {  
