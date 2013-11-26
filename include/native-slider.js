@@ -46,8 +46,6 @@ function slide(e, direction ) {
 
 $(document).ready(function() {
 	
-	/*	To do: Fix clicking the built-in scrollbar arrow in IE  */
-	
 	$('.slider').on('scroll', function () { 
 		slider = $(this); 
 		scrollslider(); 
