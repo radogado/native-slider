@@ -86,3 +86,8 @@
 .slider img {
 	display: block; /* Fix image bottom padding */
 }
+
+.disable-hover,
+.disable-hover * {
+  pointer-events: none !important;
+}
