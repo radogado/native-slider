@@ -1,7 +1,6 @@
 .slider-container {
 	
 	position: relative;
-	font-family: 'Helvetica Neue', sans-serif;
 	overflow: hidden;
 
 }
@@ -42,12 +41,6 @@
 
 .slider-arrow, .slider-nav a {
 	
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-khtml-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
 	cursor: pointer;
 	padding: .6em;
 	width: 1em;
@@ -58,6 +51,16 @@
 	text-shadow: 0 -1px 1px #333;
 	box-shadow: 0 1px 1px #666;
 	transition: background-color .2s linear;
+
+}
+.slider-arrow, .slider-nav {
+
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 
 }
 

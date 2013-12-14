@@ -21,7 +21,7 @@ function scrollFinished() { // center the nearest scrolling item
 function move_index() {
 
 	$(slider).parent().find('.slider-nav a.active').removeClass();
-	var index = $(slider).scrollLeft() / $(slider).width() + 1;
+	var index = Math.round( $(slider).scrollLeft() / $(slider).width() ) + 1;
 
 	if ( index > $(slider).parent().find('.slider-nav a').length ) { 
 		index = $(slider).parent().find('.slider-nav a').length; 
