@@ -10,6 +10,7 @@
 	overflow-x: scroll;
 	overflow-y: hidden;
 	white-space: nowrap;
+	-webkit-overflow-scrolling: touch; /* fast, hardware-accelerated scrolling */
 
 }
 
@@ -29,7 +30,7 @@
 	position: absolute;
 	top: 45%;
 	left: 1em;
-	z-index: 9999; /* Stay on top of slider-nav if they are aligned vertically */
+	z-index: 999; /* Stay on top of slider-nav if they are aligned vertically */
 	
 }
 .slider-arrow.right {
@@ -51,6 +52,7 @@
 	text-shadow: 0 -1px 1px #333;
 	box-shadow: 0 1px 1px #666;
 	transition: background-color .2s linear;
+	line-height: .9em;
 
 }
 .slider-arrow, .slider-nav {
