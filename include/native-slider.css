@@ -1,3 +1,25 @@
+/* natUIve by rado.bg */
+
+.row {
+
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+	border-collapse: separate;
+	overflow-x: hidden;
+
+}
+
+	.row > * {
+	
+		display: table-cell;
+		vertical-align: top;
+		position: relative;
+		padding: .5em;
+	    -moz-box-sizing: border-box;
+
+	}
+
 .slider-container {
 	
 	position: relative;
@@ -11,6 +33,7 @@
 	overflow-y: hidden;
 	white-space: nowrap;
 	-webkit-overflow-scrolling: touch; /* fast, hardware-accelerated scrolling */
+	background: #fafafa;
 
 }
 
@@ -19,9 +42,9 @@
 	width: 100%;
 	display: inline-block;
 	white-space: normal;
-	margin: 0 -4px 0 0; /* Fix inline-block right padding */
 	vertical-align: top;
 	overflow: hidden;
+	padding: 0;
 
 }
 
@@ -49,8 +72,6 @@
 	border-radius: 50%;
 	background: #bbb;
 	color: #fff;
-	text-shadow: 0 -1px 1px #333;
-	box-shadow: 0 1px 1px #666;
 	transition: background-color .2s linear;
 	line-height: .9em;
 
@@ -68,7 +89,8 @@
 
 .slider-nav a.active {
 
-	background: #666;
+	background: #fff;
+	color: #666;
 
 }
 
@@ -88,11 +110,35 @@
 	
 }
 
-.slider img {
+.slider > * > img {
+
 	display: block; /* Fix image bottom padding */
+	margin: 0 auto;
+
 }
 
-.disable-hover,
-.disable-hover * {
-  pointer-events: none !important;
+.disable-hover, .disable-hover * {
+
+	pointer-events: none !important;
+
+}
+
+.slider-nav.thumbnails {
+	
+	right: auto;
+	position: static;
+	
+}
+
+.slider-nav.thumbnails a {
+	
+	text-indent: 0;
+	width: auto;
+	height: auto;
+	display: table-cell;
+	text-align: left;
+	color: #333;
+	border-radius: 0;
+	line-height: 1.2;
+	padding: .5em;	
 }
