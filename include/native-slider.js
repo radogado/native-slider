@@ -204,7 +204,6 @@ function slide ( e, target ) {
 		}
 		
 		start = slider.scrollLeft;
-		console.log(start + ' ' + change); 
 
 	}
 	
