@@ -38,6 +38,7 @@
 	white-space: nowrap;
 	-webkit-overflow-scrolling: touch; /* fast, hardware-accelerated scrolling */
 	background: #fafafa;
+	font-size: 0; /* remove inline-block margin */
 
 }
 
@@ -49,6 +50,7 @@
 	vertical-align: top;
 	overflow: hidden;
 	padding: 0;
+	font-size: 16px;
 
 }
 
