@@ -1,0 +1,27 @@
+/* Grid */
+
+.row {
+
+	display: table;
+	table-layout: fixed;
+	width: 100%;
+	border-collapse: separate;
+	overflow-x: hidden;
+
+}
+
+	.row > * {
+	
+		display: table-cell;
+		vertical-align: top;
+		position: relative;
+		padding: .5em;
+	    -moz-box-sizing: border-box;
+
+	}
+	
+img {
+	
+	max-width: 100%;
+}
+

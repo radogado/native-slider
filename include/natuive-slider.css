@@ -1,35 +1,4 @@
-/* natUIve by rado.bg */
-
-/* Grid */
-
-.row {
-
-	display: table;
-	table-layout: fixed;
-	width: 100%;
-	border-collapse: separate;
-	overflow-x: hidden;
-
-}
-
-	.row > * {
-	
-		display: table-cell;
-		vertical-align: top;
-		position: relative;
-		padding: .5em;
-	    -moz-box-sizing: border-box;
-
-	}
-	
-img {
-	
-	max-width: 100%;
-}
-
-/* Slider */
-
-/* natUIve by rado.bg */
+/* natUIve Slider */
 
 .slider-container {
 	
@@ -46,10 +15,8 @@ img {
 	-webkit-overflow-scrolling: touch; /* momentum scrolling */
     -webkit-transform: translate3d(0, 0, 0); /* fast, hardware-accelerated scrolling */
     -webkit-transform: translateZ(0);
-	font-size: 0;
-	z-index: 0;
 	-ms-overflow-style: none; /* No scrollbars on IE10+ */
-	
+
 }
 
 .slider > * {
@@ -60,8 +27,7 @@ img {
 	vertical-align: top;
 	overflow: hidden;
 	padding: 0;
-	font-size: 15px;
-	
+
 }
 
 .slider::-webkit-scrollbar {
