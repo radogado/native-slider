@@ -1,11 +1,4 @@
-/* natUIve by rado.bg */
-/* To do: fix slider on mobile. Jumping back-forth (iPhone only on portrait orientation) – 4px inline-block bug? Very slow animation on Android. */
-
-var scrollTimer = null;
-var slider;
-var scroll_start = 0;
-var original_scroll = 0;
-var height_scroll = 0;
+/* Common functions */
 	
 var requestAnimFrame = (function() {
 	
@@ -105,96 +98,134 @@ Math.easeInOutQuad = function ( t, b, c, d ) {
 
 };
 
+/* natUIve by rado.bg */
+
+var scrollTimer = null;
+var slider;
+var original_scroll = 0;
+var slider_animation = 0;
+var touchmovex = 0;
+var current_scroll = 0;
+
+var ua = navigator.userAgent.toLowerCase();
+var is_android = ua.indexOf("android") > -1; //&& ua.indexOf("mobile");
+
 function scrollSlider (e) {
 
+	if ( slider_animation || is_android ) return;
+
 	var event = e || window.event;
-	s = event.target || event.srcElement;
-	if ( s != slider ) {
-		
-		slider = s;
-		original_scroll = slider.scrollLeft;
-		
+	el = event.target || event.srcElement;
+
+	if ( slider != el ) { // on switching to another slider
+
+		original_scroll = el.attributes['original_scroll'];
+
 	}
+
+	slider = el;
+
     clearTimeout(scrollTimer);
+    current_scroll = slider.scrollLeft;
     scrollTimer = setTimeout(function() {
-		scroll_start = slider.scrollLeft;
-        slide (event, 'snap');
+		
+		if ( current_scroll == slider.scrollLeft ) { /* If all scroll, including inertia, has ended */
+		
+			slide (event, 'snap');
+		
+		}
+
     }, 50);
 
 };
 
-function moveIndex (el) {
-	
-	if (!el) {
-		
-		el = slider;
-	
-	}
-	removeClass ( el.parentNode.querySelector('.slider-nav a.active'), 'active' );
-	var index = Math.round( el.scrollLeft / el.offsetWidth ) + 1;
+function moveIndex () {
 
-	addClass( el.parentNode.querySelector('.slider-nav').childNodes[index-1], 'active');
+	removeClass ( slider.parentNode.querySelector('.slider-nav a.active'), 'active' );
+	var index = Math.round( slider.scrollLeft / slider.offsetWidth ) + 1;
+
+	if ( slider.parentNode.querySelector('.slider-nav').childNodes[index-1] ) {
+		addClass( slider.parentNode.querySelector('.slider-nav').childNodes[index-1], 'active');
+	}
 	
 }
 
 function slideEnd () {
 
-	slider.onscroll = scrollSlider;
-	clearTimeout(scrollTimer);
-	removeClass( document.body, 'disable-hover' );
-  	moveIndex();
-  	original_scroll = slider.scrollLeft;
+	el.attributes['original_scroll'] = original_scroll = slider.scrollLeft;
+
+	moveIndex();
+
+	slider_animation = 0;
+
 	document.onkeyup = sliderKeyboard;
+
+	forEach('.slider', function(el, i) {
+
+		el.onscroll = scrollSlider;
+		
+	});
 	
 }
 
-/* Make slide universal with parameter specifying target scroll */
-
 function slide ( e, target ) {
 
-    clearTimeout(scrollTimer);
+	if (slider_animation) return;
+
+	slider_animation = 1;
+	
+	forEach('.slider', function(el, i) {
+
+		el.onscroll = null;
+		
+	});
+	
 	var event = e || window.event; 
+
 	if ( typeof event.srcElement == 'unknown' ) { return; } // IE8
 	el = event.target || event.srcElement;
-	slider = el;
-	if (slider) {
-	
-		slider.onscroll = function () { return false; };
 
-	}
-	
-	stopEvent(e);
+	stopEvent(event);
+
 	var change = 0;
-	
-	addClass( document.body, 'disable-hover');
-	
-	if (target == 'index') {
 
+	if ( target == 'index' ) {
+			
 		slider = el.parentNode.parentNode.querySelector('.slider');
 		start = slider.scrollLeft;
 		change = thisIndex(el) * slider.offsetWidth - start;
-		
-	}
-	
-	if ( target == 'left') {
-
-		slider = el.parentNode.querySelector('.slider');
-		start = slider.scrollLeft;
-		change = slider.scrollLeft - slider.offsetWidth - start;
 
 	}
 	
-	if ( target == 'right') {
+	if ( target == 'arrow') {
 
 		slider = el.parentNode.querySelector('.slider');
 		start = slider.scrollLeft;
-		change = slider.scrollLeft + slider.offsetWidth - start;
+		if ( hasClass(el, 'left') ) {
+			change = slider.scrollLeft - slider.offsetWidth - start;
+
+			if ( slider.scrollLeft % slider.offsetWidth ) { /* not snapped into position */
+
+				change = -1 * (slider.scrollLeft % slider.offsetWidth);
+
+			}
+
+		} else {
+
+			change = slider.scrollLeft + slider.offsetWidth - start;
+
+			if ( slider.scrollLeft % slider.offsetWidth ) { /* not snapped into position */
+
+				change -= slider.scrollLeft % slider.offsetWidth;
+
+			}
+		}
 
 	}
 	
 	if ( target == 'snap') {
 
-/* 		console.log('From ' + original_scroll + ' to ' + slider.scrollLeft); */
+		slider = el;
 
 		if (slider.scrollLeft > original_scroll) { 
 			change = slider.offsetWidth - slider.scrollLeft % slider.offsetWidth;
@@ -203,10 +234,17 @@ function slide ( e, target ) {
 			change = -1 * (slider.offsetWidth + change);
 		}
 		
+		if ( original_scroll == slider.scrollLeft ) change = 0;
+				
 		start = slider.scrollLeft;
 
 	}
-	
+
+	if ( !change ) {
+		slideEnd();
+		return;
+		}
+
 	currentTime = 0,
 	increment = 20;
 	duration = 400;
@@ -219,12 +257,18 @@ function slide ( e, target ) {
 		// slide
 		slider.scrollLeft = val;
 		// do the animation unless its over
-		if(currentTime < duration) {
+		if( (currentTime < duration) ) {
+
 			requestAnimFrame(animateScroll);
+
 		} else {
-			if (slideEnd && typeof(slideEnd) === 'function') { // the animation is done so lets callback
+
+			if (slideEnd && typeof(slideEnd) === 'function') { // the animation is done so let's callback
+
 				slideEnd();
+
 			}
+
 		}
 	};
 	animateScroll();
@@ -232,7 +276,6 @@ function slide ( e, target ) {
 }
 
 function sliderKeyboard (e) {
-
 
 /*
 	slider = document.querySelector('.slider'); // Move slider #1; to do: select nearest slider
@@ -256,10 +299,11 @@ function sliderKeyboard (e) {
 };
 
 function makeSlider (el) {
-
+	
+	addClass (el, 'slider');
 	el.insertAdjacentHTML('beforebegin', '<div class="slider-container"></div>'); // Create a container and move the slider in it
 	container = el.previousSibling;
-	container.insertAdjacentHTML('afterbegin', '<a class="slider-arrow left">←</a>' + el.outerHTML + '<a class="slider-arrow right">→</a><div class="slider-nav"></div>'); // 'replace' function removes spaces between slides to glue them together
+	container.insertAdjacentHTML('afterbegin', '<a class="slider-arrow left">←</a>' + el.outerHTML/* .replace( new RegExp( "\>[\n\t ]+\<" , "g" ) , "><" ) */ + '<a class="slider-arrow right">→</a><div class="slider-nav"></div>');
 	container.nextSibling.outerHTML = '';
 	el = container.querySelector('.slider');
 	
@@ -282,35 +326,36 @@ function makeSlider (el) {
 			slider_nav.insertAdjacentHTML('beforeend', ( !i ? '<a class="active">' : '<a>' ) + el.children[i].querySelector('.thumbnail').innerHTML + '</a>' );
 			slider_nav.style.marginTop = (-1 * height_scroll) + 'px';
 			
-						
 		} else {
 			
 			container.querySelector('.slider-nav').insertAdjacentHTML('beforeend', ( !i ? '<a class="active">' : '<a>' ) + (i + 1) + '</a>');
-/* 			container.style.height = (container.offsetHeight - height_scroll) + 'px'; */
+
+ 			if (!i) {
+ 				
+ 				container.style.height = (container.offsetHeight - height_scroll) + 'px';
+ 			}
 
 		}
 		
 		container.querySelector('.slider-nav').lastChild.onclick = function (e) {
+
 			slide(e, 'index');
+
 		};
 
 	}
 
-	container.querySelector('.slider-arrow.left').onclick = function (e) {
+	container.querySelector('.slider-arrow.left').onclick = container.querySelector('.slider-arrow.right').onclick = function (e) {
 
-		slide(e, 'left');
-
-	}
-	
-	container.querySelector('.slider-arrow.right').onclick = function (e) {
-
-		slide(e, 'right');
+		slide(e, 'arrow');
 
 	}
 	
 	el.onscroll = scrollSlider;
 	
-/* 	el.style.width = el.offsetWidth + 'px'; // Chrome fix, now obsolete? */
+	el.attributes['original_scroll'] = 0;
+	
+	return el;
 	
 }
 
@@ -321,19 +366,17 @@ addEventHandler ( window, 'load', function() {
 	/* Initialise JS extras: create arrows/numbers navigation */
 	forEach('.slider', function(el, i) {
 
-		if (!i) {
-			slider = el;
-		}
-		
 		makeSlider(el);
 		
 	});
+	
+	slider = document.querySelector('.slider');
 	
 	window.onresize = function () { 
 		
 		forEach('.slider', function (el,i) {
 			el.scrollLeft = 0;
-			moveIndex (el);
+			moveIndex ();
 		});
 		
 	}
