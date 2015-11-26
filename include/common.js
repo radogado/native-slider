@@ -1,40 +1,14 @@
-function addClass_classList(el, className) {
-
-	el.classList.add(className);
-
-}
-
-function addClass_className(el, className) {
-
-    el.className += ' ' + className;
-
-}
-
 function addClass(el, className) {
 
     if (el.classList) {
 		
         el.classList.add(className);
-        addClass = addClass_classList;
 
     } else {
 
         el.className += ' ' + className;
-        addClass = addClass_className;
 
     }
-
-}
-
-function removeClass_classList(el, className) {
-
-    el.classList.remove(className);
-
-}
-
-function removeClass_className(el, className) {
-
-    el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 
 }
 
@@ -43,26 +17,12 @@ function removeClass(el, className) {
     if (el.classList) {
 
         el.classList.remove(className);
-        removeClass = removeClass_classList;
 
     } else {
 
-        removeClass_className(el, className);
-        removeClass = removeClass_className;
+	    el.className = el.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
 
     }
-
-}
-
-function hasClass_classList(el, className) {
-
-    return el.classList.contains(className);
-
-}
-
-function hasClass_className(el, className) {
-
-    return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
 
 }
 
@@ -70,13 +30,11 @@ function hasClass(el, className) {
 	
 	if (el.classList) {
 		
-		hasClass = hasClass_classList;
 		return el.classList.contains(className);
 
 	} else {
 		
-		hasClass = hasClass_className;
-		return hasClass_className(el, className);
+	    return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className);
 			
 	}
 	
@@ -106,35 +64,21 @@ function transferClass(el_origin, el_target, className) {
 
 }
 
-function eventElement_e(e) {
-
-    return e.target;
-
-}
-
-function eventElement_window(e) {
-
-    return window.event.srcElement;
-
-}
-
 function eventElement(e) {
 	
 	if (e) {
 		
-		eventElement = eventElement_e;
 		return e.target;
 
 	} else {
 		
-		eventElement = eventElement_window;
 		return window.event.srcElement;
 		
 	}
 
 }
 
-var parseHTML = function(str) {
+parseHTML = function(str) {
 
     tmp = document.implementation.createHTMLDocument('Parsed');
     tmp.body.innerHTML = str;
@@ -232,8 +176,8 @@ function thisIndex(el) {
 
     if (!el) return;
 
-    var nodes = el.parentNode.childNodes,
-        node;
+    nodes = node = el.parentNode.childNodes;
+
     var i = count = 0;
 
     while ((node = nodes.item(i++)) && node != el) {
@@ -250,36 +194,19 @@ function thisIndex(el) {
 
 }
 
-function parentByClass(el, className) {
-
-    while (el.parentNode && !hasClass(el, className)) {
-
-        el = el.parentNode;
-
-    }
-	if (typeof el.tagName == 'undefined') {
-		
-		return false;
-
-	}
-
-    return hasClass(el, className) && el;
-
-}
-
 if (!Array.prototype.indexOf) {
 
-    Array.prototype.indexOf = function(elt) {
+    Array.prototype.indexOf = function(el) {
 
-        var len = this.length >>> 0;
+        len = this.length >>> 0;
 
-        var from = Number(arguments[1]) || 0;
+        from = Number(arguments[1]) || 0;
         from = (from < 0) ? Math.ceil(from) : Math.floor(from);
         if (from < 0)
             from += len;
 
         for (; from < len; from++) {
-            if (from in this && this[from] === elt)
+            if (from in this && this[from] === el)
                 return from;
         }
         return -1;
@@ -298,5 +225,119 @@ function qa(selector) {
 	
 	return document.querySelectorAll(selector);
 	
+}
+
+var wrap = function (toWrap, wrapper) { // Thanks yckart
+
+    wrapper = wrapper || document.createElement('div');
+    if (toWrap.nextSibling) {
+
+        toWrap.parentNode.insertBefore(wrapper, toWrap.nextSibling);
+
+    } else {
+
+        toWrap.parentNode.appendChild(wrapper);
+
+    }
+
+    return wrapper.appendChild(toWrap);
+
+};
+
+function childByClass (el, cl) {
+
+	i = 0;
+	while(i < el.children.length) {
+		
+		if (hasClass(el.children[i], cl)) {
+			
+			return el.children[i];
+
+		}
+		i++;
+		
+	}
+
+	return false;
+		
+}
+
+var getClosest = function (el, selector) { // Thanks http://gomakethings.com/ditching-jquery/
+
+    var firstChar = selector.charAt(0);
+
+    // Get closest match
+    for ( ; el && el !== document; el = el.parentNode ) {
+
+        // If selector is a class
+        if ( firstChar === '.' ) {
+            if ( hasClass(el, selector.substr(1) ) ) {
+                return el;
+            }
+        }
+
+        // If selector is an ID
+        if ( firstChar === '#' ) {
+            if ( el.id === selector.substr(1) ) {
+                return el;
+            }
+        } 
+
+        // If selector is a data attribute
+        if ( firstChar === '[' ) {
+            if ( el.hasAttribute( selector.substr(1, selector.length - 2) ) ) {
+                return el;
+            }
+        }
+
+        // If selector is a tag
+        if ( el.tagName.toLowerCase() === selector ) {
+            return el;
+        }
+
+    }
+
+    return false;
+
+};
+
+temp = document.createElement('temp');
+
+transitions = {
+
+	'transition'		: 'transitionend',
+	'OTransition'		: 'oTransitionEnd',
+	'MozTransition'		: 'transitionend',
+	'WebkitTransition'	: 'webkitTransitionEnd'
+
+}
+
+animations = {
+
+// 	'animation'      	: 'animationend', // Disable IE because of a Slider glitch
+	'OAnimation'     	: 'oAnimationEnd',
+	'MozAnimation'   	: 'animationend',
+	'WebkitAnimation'	: 'webkitAnimationEnd'
+
+}
+
+for(var t in transitions){
+
+    if (temp.style[t] !== undefined) {
+
+        var transitionEvent = transitions[t];
+
+    }
+
+}
+
+for(var t in animations){
+
+    if (temp.style[t] !== undefined) {
+
+        var animationEvent = animations[t];
+
+    }
+
 }
 
