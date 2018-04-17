@@ -227,22 +227,35 @@ function qa(selector) {
 	
 }
 
-var wrap = function (toWrap, wrapper) { // Thanks yckart
+function wrap(toWrap, wrapper) { // Thanks yckart
+
+// 	observerOff();
 
     wrapper = wrapper || document.createElement('div');
-    if (toWrap.nextSibling) {
-
-        toWrap.parentNode.insertBefore(wrapper, toWrap.nextSibling);
-
-    } else {
-
-        toWrap.parentNode.appendChild(wrapper);
-
+	
+	var sibling = toWrap.nextSibling;
+	var parent = toWrap.parentNode;
+	wrapper.appendChild(toWrap);
+	
+	if (parent) { // Already attached to DOM
+	
+	    if (sibling) { // Attach the wrapper
+	
+	        parent.insertBefore(wrapper, sibling);
+	
+	    } else {
+	
+	        parent.appendChild(wrapper);
+	
+	    }
+    
     }
+    
+//     observerOn();
 
-    return wrapper.appendChild(toWrap);
+    return wrapper;
 
-};
+}
 
 function childByClass (el, cl) {
 
@@ -262,7 +275,7 @@ function childByClass (el, cl) {
 		
 }
 
-var getClosest = function (el, selector) { // Thanks http://gomakethings.com/ditching-jquery/
+var closest = function (el, selector) { // Thanks http://gomakethings.com/ditching-jquery/
 
     var firstChar = selector.charAt(0);
 
@@ -301,43 +314,85 @@ var getClosest = function (el, selector) { // Thanks http://gomakethings.com/dit
 
 };
 
-temp = document.createElement('temp');
+/* Chainable animation specified as CSS Animation */
 
-transitions = {
+var temp = document.createElement('temp');
 
-	'transition'		: 'transitionend',
-	'OTransition'		: 'oTransitionEnd',
-	'MozTransition'		: 'transitionend',
-	'WebkitTransition'	: 'webkitTransitionEnd'
+var animations = {
 
-}
-
-animations = {
-
-// 	'animation'      	: 'animationend', // Disable IE because of a Slider glitch
-	'OAnimation'     	: 'oAnimationEnd',
+	'animation'      	: 'animationend',
 	'MozAnimation'   	: 'animationend',
 	'WebkitAnimation'	: 'webkitAnimationEnd'
 
-}
+};
 
-for(var t in transitions){
+for(var t in animations) {
 
-    if (temp.style[t] !== undefined) {
+    if (temp.style[t] !== 'undefined') {
 
-        var transitionEvent = transitions[t];
-
-    }
-
-}
-
-for(var t in animations){
-
-    if (temp.style[t] !== undefined) {
-
-        var animationEvent = animations[t];
+        var animationEndEvent = animations[t];
 
     }
 
 }
 
+function makeReady(el) {
+	
+	el.setAttribute('data-ready', true);
+
+}
+
+function focusWithin(selector) {
+
+	// To do: If not IE/Edge, return q(selector + ':focus-within');
+
+	var result = null;
+	forEach(qa(selector), function (el) {
+		
+		if (el.querySelector(':focus')) {
+			
+			result = el;
+
+		}
+		
+	});
+	
+	return result;
+	
+}
+
+var current_slider = q('.slider');
+
+function animate(el, animation_code, duration, callback) { // Default duration = .2s, callback optional
+
+// To do: add animation-fill-mode: forwards to keep the end state
+
+	if (!el.getAttribute('data-animation')) {
+
+		el.addEventListener(animationEndEvent, function animationEndHandler(e) {
+			
+			stopEvent(e);
+			var el = e.target; 
+			q('head').removeChild(q('.' + el.getAttribute('data-animation')));
+			el.removeAttribute('data-animation');
+	 		el.removeEventListener(animationEndEvent, animationEndHandler);
+			if (typeof callback === 'function') {
+		
+				callback();
+		
+			}
+		
+		}, false);
+
+		var animation_name = 'a' + new Date().getTime(); // Unique animation name
+		var styles = document.createElement('style');
+		styles.innerHTML = '@keyframes ' + animation_name + ' {' + animation_code + '} [data-animation=' + animation_name + '] { animation-name: ' + animation_name + '; animation-duration: ' + ((typeof duration === 'undefined') ? .2 : duration) + 's; }'; // Where animation format is 		0% { opacity: 1 } 100% { opacity: 0 }
+		q('head').appendChild(styles);
+		addClass(styles, animation_name);
+
+// 		el.dataset.animation = animation_name;
+		el.setAttribute('data-animation', animation_name);
+	
+	}
+	
+}
